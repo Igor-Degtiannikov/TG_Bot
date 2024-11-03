@@ -10,7 +10,13 @@ load_dotenv()
 
 bot = telebot.TeleBot(config.TELEGRAM_API_KEY)
 openai.api_key = config.CHAT_API_KEY
+target_chat_id = 359937258
 
+# @bot.message_handler(content_types=['text', 'photo', 'document'])
+# def get_chat_id(message):
+#    """Это обработчик сообщений, чтобы добавить фото в нужный чат, надо узнать айди чата. этот код позволяет так сделать  """
+#    print(message.chat.id)
+#    bot.send_message(message.chat.id, f"Chat ID: {message.chat.id}")
 def load_users():
     try:
         with open('users.join', 'r') as file: # Открывает файл в режиме "r" - чтения
@@ -39,14 +45,19 @@ def show_main_menu(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     item1 = types.KeyboardButton('Using ChatGPT')
     item2 = types.KeyboardButton('Help')
-    markup.add(item1, item2)
+    item3 = types.KeyboardButton('Photo')
+    markup.add(item1, item2, item3)
     bot.send_message(message.chat.id,'Pick what you want', reply_markup=markup)
 
-@bot.message_handler(content_types='text')
+@bot.message_handler(content_types=['text'])
 def message_replay(message):
     if message.text == 'Using ChatGPT':
         bot.send_message(message.chat.id,'Write the message:')
         bot.register_next_step_handler(message, get_chatgpt_response)
+
+    elif message.text == 'Photo':
+        bot.send_message(message.chat.id, 'Please send a photo:')
+        bot.register_next_step_handler(photo)
 
     elif message.text == 'Help':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -84,5 +95,11 @@ def get_chatgpt_response(message): # Функция предназначена �
         bot.send_message(message.chat.id,response.choices[0].text.strip()) # Текст ответа от ChatGPT, который отправляется пользователю.
     except Exception as e: # Начинает блок обработки ошибок, который выполняется, если в блоке try произошла ошибка,
         bot.send_message(message.chat.id, f"Произошла ошибка при общении с ChatGPT: {str(e)}") # str(e): Преобразует объект ошибки в строку, чтобы можно было понять, что пошло не так
+
+@bot.message_handler(content_types=['photo'])
+def photo(message):
+    fileID = message.photo[-1].file_id
+    bot.send_photo(target_chat_id, fileID)
+    bot.send_message(message.chat.id, 'The photo has been successfully sent.')
 
 bot.infinity_polling()
