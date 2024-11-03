@@ -4,15 +4,35 @@ import openai
 import config
 from dotenv import load_dotenv
 import os
+import json
 
 load_dotenv()
 
 bot = telebot.TeleBot(config.TELEGRAM_API_KEY)
 openai.api_key = config.CHAT_API_KEY
 
+def load_users():
+    try:
+        with open('users.join', 'r') as file: # Открывает файл в режиме "r" - чтения
+            return json.load(file) # Если он сущетсвует, функция сгружает из него данные = словарь с данными о пользователях
+    except FileNotFoundError: # Если файл не найден, срабатывает исключение
+        return {} # Возвращает пустой словарь
+
+def save_users(users):
+    with open('users.json', 'w') as file: # Открывает файл в режиме "w" - записи
+        json.dump(users, file) # Зарписывает в файл обновленный словарь
 @bot.message_handler(commands=['start'])
 def start_message(message):
-    bot.send_message(message.chat.id, 'Hello! I am new bot, which can use ChatGPT.')
+    users = load_users() # Загружает список пользователей из файла.(Если он не существует, то файл пустой)
+    user_id = str(message.chat.id)
+
+    if user_id not in users: # Если пользователя нет в users = значит он впервые пришел,м и ему отправляется приветсвенное сообщение
+        bot.send_message(message.chat.id, 'Hello! I am new bot, which can use ChatGPT.')
+        users[user_id] = True # Добовляем пользователя в список
+        save_users(users) # Сохраняем
+    else:
+        bot.send_message(message.chat.id, "Welcome back! Here's what I can do for you: ")
+
     show_main_menu(message)
 
 def show_main_menu(message):
@@ -24,7 +44,6 @@ def show_main_menu(message):
 
 @bot.message_handler(content_types='text')
 def message_replay(message):
-
     if message.text == 'Using ChatGPT':
         bot.send_message(message.chat.id,'Write the message:')
         bot.register_next_step_handler(message, get_chatgpt_response)
