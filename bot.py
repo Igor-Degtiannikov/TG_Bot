@@ -57,7 +57,7 @@ def message_replay(message):
 
     elif message.text == 'Photo':
         bot.send_message(message.chat.id, 'Please send a photo:')
-        bot.register_next_step_handler(photo)
+
 
     elif message.text == 'Help':
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
@@ -96,9 +96,9 @@ def get_chatgpt_response(message): # Функция предназначена �
     except Exception as e: # Начинает блок обработки ошибок, который выполняется, если в блоке try произошла ошибка,
         bot.send_message(message.chat.id, f"Произошла ошибка при общении с ChatGPT: {str(e)}") # str(e): Преобразует объект ошибки в строку, чтобы можно было понять, что пошло не так
 
-@bot.message_handler(content_types=['photo'])
-def photo(message):
-    fileID = message.photo[-1].file_id
+@bot.message_handler(content_types=['photo']) # Данный обработчик будет раотать только при определнном формате сообщения - фото
+def photo(message): # Потом декоратор вызывает эту функцию. имя - photo, параметр - message
+    fileID = message.photo[-1].file_id # список объектов, каждый из которых представляет собой фотографию разного размера, автоматически сгенерированную Telegram.
     bot.send_photo(target_chat_id, fileID)
     bot.send_message(message.chat.id, 'The photo has been successfully sent.')
 
