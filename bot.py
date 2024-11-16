@@ -115,3 +115,5 @@ logging.info("Bot is starting polling...")
 if __name__ == "__main__":
     bot.infinity_polling()
 
+new ПР
+
