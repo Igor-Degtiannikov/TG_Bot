@@ -22,7 +22,7 @@ def register_help_handlers(bot):
     """
     Register handlers for help-related buttons.
     """
-    @bot.message_handler(func=lambda m: m.text == 'Instruction')
+    @bot.message_handler(func=lambda m: m.text == 'Instruction')New ПРNew ПР
     def send_instruction(message):
         """
         Handle the 'Instruction' button.

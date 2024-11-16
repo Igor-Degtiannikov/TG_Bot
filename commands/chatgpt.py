@@ -13,7 +13,7 @@ class ChatGPTCommand(Command):
         self.bot.set_state(message.chat.id, ChatBotStates.WAITING_FOR_CHATGPT_INPUT)
 
 
-def register_chatgpt_handlers(bot):
+def New ПРregister_chatgpt_handlers(bot):
     """
     Register the state handler for ChatGPT input.
     """

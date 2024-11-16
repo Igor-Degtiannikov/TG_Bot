@@ -28,7 +28,7 @@ def register_photo_handlers(bot):
             "The bot will show you the chat ID.",
             parse_mode='Markdown'
         )
-
+New ПР
 
 
 

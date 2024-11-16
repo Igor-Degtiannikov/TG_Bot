@@ -12,7 +12,7 @@ def get_commands(bot):
         'Help': HelpCommand(bot),
         'Photo': PhotoCommand(bot)
     }
-
+New ПР
 
 
 

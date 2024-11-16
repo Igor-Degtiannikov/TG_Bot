@@ -9,4 +9,4 @@ class Command:
     def execute(self, message):
         """A method that will be overridden in each subclass of the command."""
         pass
-
+New ПР
