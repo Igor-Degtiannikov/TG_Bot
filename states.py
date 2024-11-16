@@ -5,10 +5,10 @@ class ChatBotStates(StatesGroup):
     WAITING_FOR_CHATGPT_INPUT = State()
     # General states
     MAIN_MENU = State()
+New ПР
 
 
 
-
-
+New ПР
 
 

@@ -7,4 +7,4 @@ TELEGRAM_API_KEY = os.getenv('TELEGRAM_API_KEY') # os.getenv получает з
 CHAT_API_KEY = os.getenv('CHAT_API_KEY')
 
 if not TELEGRAM_API_KEY or not CHAT_API_KEY:
-    raise ValueError('Ошибка! Нет ключей!!')
+    raise ValueError('Ошибка! Нет ключей!!')New ПР
